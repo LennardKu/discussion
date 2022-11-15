@@ -1,3 +1,12 @@
+## !! --- NOT ACTIVE YET -- !!
+
+[![Keep me updated](https://img.shields.io/badge/Keep%20me%20updated-red)](https://discussion.kuenenwebsites.com/newsletter/)
+
+```
+  1. Fase: Development
+  2. Fase: Testing
+  3. Fase: Deployment
+```
 
 # Discussion
 
