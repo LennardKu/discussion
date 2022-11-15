@@ -64,6 +64,7 @@ How to use this project
 
 ## Usage/Examples
 
+## Example config script
 ```html
 <script>
   (function(){
@@ -75,7 +76,11 @@ How to use this project
   })();
 </script>
 ```
+## Reload content
 
+```js
+discussion.reload();
+```
 
 ## 🔗 Links
 [![portfolio](https://img.shields.io/badge/Patreon-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://patreon.com/)
