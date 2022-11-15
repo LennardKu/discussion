@@ -61,3 +61,24 @@ How to use this project
 
 
 
+
+## Usage/Examples
+
+```html
+<script>
+  (function(){
+    let discussionInit = document.createElement( "script" );
+    discussionInit.src = `https://cdn.kuenenwebsites.com/scripts/js/discussion.js`;
+    discussionInit.setAttribute('defer',true);
+    discussionInit.setAttribute('siteKey','{userProjectKey}');
+    document.getElementsByTagName( "head" )[0].appendChild( discussionInit );
+  })();
+</script>
+```
+
+
+## 🔗 Links
+[![portfolio](https://img.shields.io/badge/Patreon-000?style=for-the-badge&logo=ko-fi&logoColor=white)](https://patreon.com/)
+[![linkedin](https://img.shields.io/badge/linkedin-0A66C2?style=for-the-badge&logo=linkedin&logoColor=white)](https://www.linkedin.com/in/lennard-kuenen/)
+[![twitter](https://img.shields.io/badge/twitter-1DA1F2?style=for-the-badge&logo=twitter&logoColor=white)](https://twitter.com/Lennardk1325)
+
