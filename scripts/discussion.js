@@ -1,3 +1,12 @@
+/*
+*
+* Author Lennard K
+* 
+* Site https://discussion.kuenenwebsites.com
+*
+* Documentation https://github.com/LennardKu/discussion
+*/
+
 "use strict"
 const siteKey = document.currentScript.getAttribute('siteKey');
 
@@ -8,14 +17,15 @@ const discussion =  {
   api:'https://api.kuenenwebsites.com',
   cdn:'https://cdn.kuenenwebsites.com',
   loginPage:'https://login.kuenenwebsites.com',
+  testLogin: false,
 
   config: async function (siteUuid) {
 
     this.siteUuid = siteUuid;
 
     if(this.siteUuid == null || this.siteUuid.length == 0){
-      this.log('noSiteUuid.error',`No site key set ${window.location.href}`);
-      this.error('No site key set: https://about.lennardkuenen.dev/discussion/activate/');
+      this.log('noSiteUuid.error', `No site key set ${window.location.href}`);
+      this.error('No site key set: https://discussion.kuenenwebsites.com/about/activate/');
       return;
     }
 
@@ -51,11 +61,19 @@ const discussion =  {
     }
   },
 
+  // !  FOR TEST PURPOSE
+  reload: async function () {
+    this.testLogin = true;
+    await this.createAnswerField();
+    await this.init();
+  },
+
   createAnswerField: function () { 
       
     for (let index = 0; index < document.querySelectorAll('[data-discussion-answer-field]').length; index++) {
-
-      if(this.checkSession() !== (false || null || undefined)){
+      let loggedIn = this.checkSession();
+      
+      if(loggedIn !== (false && null && undefined)){
 
         let answerField = document.createElement('div'),
         answerForm = document.createElement('form'),
@@ -79,8 +97,9 @@ const discussion =  {
         answerForm.appendChild(answerSend);
         answerField.appendChild(answerForm);
 
+        document.querySelectorAll('[data-discussion-answer-field]')[index].innerHTML = '';
         document.querySelectorAll('[data-discussion-answer-field]')[index].appendChild( answerField );
-      }else{
+      } else {
 
         // Login message 
         let registerMessage = document.createElement('div'),
@@ -92,7 +111,8 @@ const discussion =  {
         registerButton.classList.add('discussion-not-registered-btn');
 
         // Login attr
-        registerButton.setAttribute('data-discussion-login','register');
+        let btnUuid = this.createUuid();
+        registerButton.setAttribute('data-discussion-login',btnUuid);
   
         registerText.innerHTML = 'You are not logged in.';
         registerButton.innerHTML = 'Login';
@@ -101,9 +121,10 @@ const discussion =  {
         registerMessage.appendChild(registerButton);
 
         registerButton.addEventListener('click',function(){
-          discussion.login();
+          discussion.login(btnUuid);
         });
 
+        document.querySelectorAll('[data-discussion-answer-field]')[index].innerHTML = '';
         document.querySelectorAll('[data-discussion-answer-field]')[index].appendChild( registerMessage );
 
       }
@@ -111,26 +132,35 @@ const discussion =  {
     }
   },
 
-  loading: function () {
-    return false; // LOADING
+  loading: function (state,type,element) {
+    
+    if(type == 'btnLoadingLogin' && state == true){
+      element.setAttribute('data-old-text',element.innerHTML);
+      element.innerHTML = 'Laden...';
+      return;
+    }
+
+    if(type == 'btnLoadingLogin' && state == false){
+      element.innerHTML = element.getAttribute('data-old-text');
+      return;
+    }
+
   },
 
-  login: function () {
+  login: function (element) {
+    this.loading(true,'btnLoadingLogin',document.querySelectorAll(`[data-discussion-login="${element}"]`)[0]);
+
     let loginWindow = window.open(`${this.loginPage}/auth/${this.userSession}/`, "Login", "location=1,status=1,scrollbars=1,resizable=no,width=400,height=600,menubar=no,toolbar=no");
-    loginWindow.onbeforeunload = function (e) {
-      // let e = e || loginWindow.event;
-    
-      //IE & Firefox
-      if (e) {
-        discussion.createAnswerField();
-        discussion.init();
-        return;
-      }
-    
-      // For Safari
-      discussion.createAnswerField();
-      discussion.init();
-    };
+    (function loginChecker(i) {
+      setTimeout(function() {
+        if (!i){
+          loginChecker(loginWindow.closed);
+        }else{
+          discussion.reload();
+          setTimeout(() => { discussion.loading(true,'btnLoadingLogin',document.querySelectorAll(`[data-discussion-login="${element}"]`)[0]); }, 1000);
+        }
+      }, 1500)
+    })(loginWindow.closed);
   },
 
   createUuid: function () {
@@ -180,7 +210,11 @@ const discussion =  {
     http.send(params);    
   },
 
+  // !  FOR TEST PURPOSE
   checkSession: function () {
+
+    return discussion.testLogin;
+
     let http = new XMLHttpRequest();
     let url = `${this.api}/discussion/session/`;
     let params = `session=${this.userSession}`;
@@ -189,6 +223,7 @@ const discussion =  {
     
     http.onreadystatechange = function() { //Call a function when the state changes.
         if(http.readyState == 4 && http.status == 200) {
+
           if(http.responseText.error == undefined){
             return false;
           }
