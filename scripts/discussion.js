@@ -14,18 +14,23 @@ const discussion =  {
   userSession: null,
   siteUuid: null,
   enableStyleScript: true,
-  api:'https://api.kuenenwebsites.com',
-  cdn:'https://cdn.kuenenwebsites.com',
-  loginPage:'https://login.kuenenwebsites.com',
-  testLogin: false,
+  sessionValue:null,
+  version: 'v1',
+  api:'https://kuenenwebsites.com/api',
+  cdn: 'https://kuenenwebsites.com/cdn',
+  loginPage:'https://kuenenwebsites.com/login',
+  siteAddress:'https://kuenenwebsites.com/discussion',
 
   config: async function (siteUuid) {
+
+    // Loading containers 
+    this.loading('messageContainers',true);
 
     this.siteUuid = siteUuid;
 
     if(this.siteUuid == null || this.siteUuid.length == 0){
       this.log('noSiteUuid.error', `No site key set ${window.location.href}`);
-      this.error('No site key set: https://discussion.kuenenwebsites.com/about/activate/');
+      this.error(`No site key set: ${this.siteAddress}/about/activate/`);
       return;
     }
 
@@ -48,8 +53,7 @@ const discussion =  {
     }
 
     // Check if session is valid
-    await this.createAnswerField();
-    await this.init();
+    await this.reload();
   },
 
   init: function () {
@@ -61,19 +65,27 @@ const discussion =  {
     }
   },
 
-  // !  FOR TEST PURPOSE
   reload: async function () {
-    this.testLogin = true;
-    await this.createAnswerField();
-    await this.init();
+    this.checkSession();
+    (function valueChecker(i) {
+      setTimeout(async function() {
+        if (discussion.sessionValue == null){
+          valueChecker();
+        }else{
+          await discussion.createAnswerField();
+          await discussion.init();
+        }
+      }, 1000)
+    })();
+
   },
 
-  createAnswerField: function () { 
-      
+  createAnswerField: async function () { 
+    
+
     for (let index = 0; index < document.querySelectorAll('[data-discussion-answer-field]').length; index++) {
-      let loggedIn = this.checkSession();
-      
-      if(loggedIn !== (false && null && undefined)){
+
+      if(this.sessionValue !== false && this.sessionValue !== null && this.sessionValue !== undefined){
 
         let answerField = document.createElement('div'),
         answerForm = document.createElement('form'),
@@ -92,6 +104,8 @@ const discussion =  {
         answerName.setAttribute('uuid', this.createUuid());
         answerName.setAttribute('hidden', true);
 
+        answerSend.innerHTML = 'Versturen';
+
         answerForm.appendChild(answerName);
         answerForm.appendChild(answerInput);
         answerForm.appendChild(answerSend);
@@ -99,6 +113,9 @@ const discussion =  {
 
         document.querySelectorAll('[data-discussion-answer-field]')[index].innerHTML = '';
         document.querySelectorAll('[data-discussion-answer-field]')[index].appendChild( answerField );
+        document.querySelectorAll('[data-discussion-answer-field]')[index].classList.remove( 'loading' );
+
+        
       } else {
 
         // Login message 
@@ -135,13 +152,20 @@ const discussion =  {
   loading: function (state,type,element) {
     
     if(type == 'btnLoadingLogin' && state == true){
-      element.setAttribute('data-old-text',element.innerHTML);
+      element.setAttribute('data-old-text','test');
       element.innerHTML = 'Laden...';
       return;
     }
 
     if(type == 'btnLoadingLogin' && state == false){
       element.innerHTML = element.getAttribute('data-old-text');
+      return;
+    }
+
+    if(type == 'messageContainers' && state == true){
+      for (let index = 0; index < document.querySelectorAll('[data-discussion-answer-field]').length; index++) {
+        document.querySelectorAll('[data-discussion-answer-field]')[index].classList.add('loading');
+      }
       return;
     }
 
@@ -157,7 +181,6 @@ const discussion =  {
           loginChecker(loginWindow.closed);
         }else{
           discussion.reload();
-          setTimeout(() => { discussion.loading(true,'btnLoadingLogin',document.querySelectorAll(`[data-discussion-login="${element}"]`)[0]); }, 1000);
         }
       }, 1500)
     })(loginWindow.closed);
@@ -196,7 +219,7 @@ const discussion =  {
   
   send: function (uuid) {
     let http = new XMLHttpRequest();
-    let url = `${this.api}/discussion/post/`;
+    let url = `${this.api}/discussion/${this.version}/post/`;
     let params = `session=${this.userSession}&uuid=${uuid}`;
     http.open('POST', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -210,37 +233,33 @@ const discussion =  {
     http.send(params);    
   },
 
-  // !  FOR TEST PURPOSE
-  checkSession: function () {
-
-    return discussion.testLogin;
+  checkSession: async function () {
 
     let http = new XMLHttpRequest();
-    let url = `${this.api}/discussion/session/`;
+    let url = `${this.api}/discussion/${this.version}/session/`;
     let params = `session=${this.userSession}`;
     http.open('GET', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
-    http.onreadystatechange = function() { //Call a function when the state changes.
-        if(http.readyState == 4 && http.status == 200) {
-
-          if(http.responseText.error == undefined){
-            return false;
-          }
-
-          if(http.responseText.success !== undefined){
-            return http.responseText.success;
-          }
-          return false;
+    http.onreadystatechange = function() { // Call a function when the state changes.
+      if(http.readyState == 4 && http.status == 200) {
+        let jsonResponse = JSON.parse(http.responseText);
+        if(jsonResponse.error !== undefined){
+          discussion.sessionValue = false;
+          return;
         }
+        discussion.sessionValue = jsonResponse;
+      }
     }
+
     http.send(params);  
+
   },
   
   delete: function (type,uuid) {  
 
     let http = new XMLHttpRequest();
-    let url = `${this.api}/discussion/delete/`;
+    let url = `${this.api}/discussion/${this.version}/delete/`;
     let params = `session=${this.userSession}&type=${type}&uuid=${uuid}`;
     http.open('POST', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -266,7 +285,7 @@ const discussion =  {
     limit = limit || 20;
     offset = offset || 0;
     let http = new XMLHttpRequest();
-    let url = `${this.api}/discussion/get/`;
+    let url = `${this.api}/discussion/${this.version}/get/`;
     let params = `session=${this.userSession}&uuid=${uuid}&type=${type}&limit=${limit}&offset=${offset}`;
     http.open('GET', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
@@ -287,7 +306,7 @@ const discussion =  {
 
   getSingle: function (type,uuid,state) {
     let http = new XMLHttpRequest();
-    let url = `${this.api}/discussion/getSingle/`;
+    let url = `${this.api}/discussion/${this.version}/getSingle/`;
     let params = `session=${this.userSession}&uuid=${uuid}&type=${type}`;
     http.open('GET', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
