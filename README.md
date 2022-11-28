@@ -34,7 +34,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get single comment
 
 ```http
-  GET https://api.kuenenwebsites.com/discussion/getSingle/
+  GET https://api.lennardkuenen.dev/discussion/getSingle/
 ```
 
 | Parameter | Type     | Description                       |
@@ -43,7 +43,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 
 
 ```http
-  GET https://api.kuenenwebsites.com/discussion/post/
+  GET https://api.lennardkuenen.dev/discussion/post/
 ```
 
 | Parameter | Type     | Description                       |
@@ -60,12 +60,12 @@ delete
 How to use this project
 
 ### Site Access
-    1. Login add https://login.kuenenwebsites.com
-    2. Create a project ( https://discussion.kuenenwebsites.com/create/project/ )
+    1. Login add https://login.lennardkuenen.dev
+    2. Create a project ( https://discussion.lennardkuenen.dev/create/project/ )
     3. Copy and paste the given code inside you're head element 
 
 ### Creating comment field
-    1. https://discussion.kuenenwebsites.com/project/{projectUuid}/new/field/
+    1. https://discussion.lennardkuenen.dev/project/{projectUuid}/new/field/
     2. Copy and paste the given code where you want people to comment
 
 
@@ -79,7 +79,7 @@ How to use this project
   (function(){
     var versionUpdate = (new Date()).getTime(),
     discussionInit = document.createElement( "script" );
-    discussionInit.src = `https://cdn.kuenenwebsites.com/scripts/js/discussion.js?v=${versionUpdate}`;
+    discussionInit.src = `https://cdn.lennardkuenen.dev/scripts/js/discussion.js?v=${versionUpdate}`;
     discussionInit.setAttribute('defer',true);
     discussionInit.setAttribute('siteKey','siteKey');
     document.getElementsByTagName( "head" )[0].appendChild( discussionInit );
