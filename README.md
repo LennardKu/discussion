@@ -20,7 +20,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get comments
 
 ```http
-  GET https://api.kuenenwebsites.com/discussion/get/
+  GET https://api.lennardkuenen.dev/discussion/get/
 ```
 
 | Parameter | Type     | Description                |
