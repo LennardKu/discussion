@@ -2,7 +2,7 @@
 *
 * Author Lennard K
 * 
-* Site https://discussion.kuenenwebsites.com
+* Site https://discussion.lennardkuenen.dev
 *
 * Documentation https://github.com/LennardKu/discussion
 */
@@ -16,10 +16,10 @@ const discussion =  {
   enableStyleScript: true,
   sessionValue:null,
   version: 'v1',
-  api:'https://kuenenwebsites.com/api',
-  cdn: 'https://kuenenwebsites.com/cdn',
-  loginPage:'https://kuenenwebsites.com/login',
-  siteAddress:'https://kuenenwebsites.com/discussion',
+  api:'https://api.lennardkuenen.dev',
+  cdn: 'https://cdn.lennardkuenen.dev',
+  loginPage:'https://login.lennardkuenen.dev',
+  siteAddress:'https://discussion.lennardkuenen.dev',
 
   config: async function (siteUuid) {
 
@@ -241,7 +241,7 @@ const discussion =  {
     http.open('GET', url, true);
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
     
-    http.onreadystatechange = function() { // Call a function when the state changes.
+    http.onreadystatechange =  function () { // Call a function when the state changes.
       if(http.readyState == 4 && http.status == 200) {
         let jsonResponse = JSON.parse(http.responseText);
         if(jsonResponse.error !== undefined){
