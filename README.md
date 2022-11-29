@@ -1,6 +1,6 @@
 ## !! --- NOT ACTIVE YET -- !!
 
-[![Keep me updated](https://img.shields.io/badge/Keep%20me%20updated-red)](https://discussion.kuenenwebsites.com/newsletter/)
+[![Keep me updated](https://img.shields.io/badge/Keep%20me%20updated-red)](https://discussion.lennardkuenen.dev/newsletter/)
 
 ```
   1. Fase: Development
@@ -20,7 +20,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get comments
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/get/
+  GET https://api.lennardkuenen.dev/discussion/v1/get/
 ```
 
 | Parameter | Type     | Description                |
@@ -34,7 +34,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get single comment
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/getSingle/
+  GET https://api.lennardkuenen.dev/discussion/v1/getSingle/
 ```
 
 | Parameter | Type     | Description                       |
@@ -43,7 +43,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/post/
+  GET https://api.lennardkuenen.dev/discussion/v1/post/
 ```
 
 | Parameter | Type     | Description                       |
