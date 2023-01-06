@@ -20,7 +20,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get comments
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v1/get/
+  GET https://api.lennardkuenen.dev/discussion/v3/posts/{apiKey}/{fieldId}/
 ```
 
 | Parameter | Type     | Description                |
@@ -34,7 +34,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get single comment
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v1/getSingle/
+  GET https://api.lennardkuenen.dev/discussion/v3/singlePost/{apiKey}/{fieldId}/
 ```
 
 | Parameter | Type     | Description                       |
@@ -43,7 +43,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v1/post/
+  GET https://api.lennardkuenen.dev/discussion/v3/post/{apiKey}/{fieldId}/
 ```
 
 | Parameter | Type     | Description                       |
@@ -79,7 +79,7 @@ How to use this project
   (function(){
     var versionUpdate = (new Date()).getTime(),
     discussionInit = document.createElement( "script" );
-    discussionInit.src = `https://cdn.lennardkuenen.dev/scripts/js/discussion.js?v=${versionUpdate}`;
+    discussionInit.src = `https://cdn.lennardkuenen.dev/scripts/js/discussion-v2.js?v=${versionUpdate}`;
     discussionInit.setAttribute('defer',true);
     discussionInit.setAttribute('siteKey','siteKey');
     document.getElementsByTagName( "head" )[0].appendChild( discussionInit );
