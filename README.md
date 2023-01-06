@@ -1,12 +1,5 @@
-## !! --- NOT ACTIVE YET -- !!
 
-[![Keep me updated](https://img.shields.io/badge/Keep%20me%20updated-red)](https://discussion.lennardkuenen.dev/newsletter/)
-
-```
-  1. Fase: Development
-  2. Fase: Testing
-  3. Fase: Deployment
-```
+<!-- [![Keep me updated](https://img.shields.io/badge/Keep%20me%20updated-red)](https://discussion.lennardkuenen.dev/newsletter/) -->
 
 # Discussion
 
@@ -16,6 +9,8 @@ Discussion.js is a comment platform to interact with you're customers your websi
 
 
 ## API Reference
+
+### Api does is not ready yet. You can use it by creating a project
 
 #### Get comments
 
