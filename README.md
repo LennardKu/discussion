@@ -68,6 +68,10 @@ How to use this project
 
 ## Usage/Examples
 
+#### Get comments
+
+[![Example]()](https://discussion.lennardkuenen.dev/sample/)
+
 ## Example config script
 ```html
 <script>
