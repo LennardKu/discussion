@@ -75,14 +75,13 @@ How to use this project
 ## Example config script
 ```html
 <script>
-  (function(){
-    var versionUpdate = (new Date()).getTime(),
-    discussionInit = document.createElement( "script" );
-    discussionInit.src = `https://cdn.lennardkuenen.dev/scripts/js/discussion-v2.js?v=${versionUpdate}`;
-    discussionInit.setAttribute('defer',true);
-    discussionInit.setAttribute('siteKey','siteKey');
-    document.getElementsByTagName( "head" )[0].appendChild( discussionInit );
-  })();
+ (function(){
+   var versionUpdate = (new Date()).getTime(),
+   discussion = document.createElement( "script" );
+   discussion.src = `https://cdn.lennardkuenen.dev/scripts/js/discussion.js?v=${versionUpdate}`;
+   discussion.setAttribute('defer',true);
+   document.getElementsByTagName( "head" )[0].appendChild( discussion);
+ })();
 </script>
 ```
 ## Reload content
