@@ -15,7 +15,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get comments
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v3/posts/[apiKey]/[fieldId]/
+  GET https://api.lennardkuenen.dev/discussion/v3/posts/apiKey/fieldId/
 ```
 
 | Parameter | Type     | Description                |
@@ -29,7 +29,7 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get single comment
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v3/singlePost/[apiKey]/[commentUid]/
+  GET https://api.lennardkuenen.dev/discussion/v3/singlePost/apiKey/commentUid/
 ```
 
 | Parameter | Type     | Description                       |
