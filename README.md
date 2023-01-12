@@ -15,40 +15,29 @@ Discussion.js is a comment platform to interact with you're customers your websi
 #### Get comments
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v3/posts/{apiKey}/{fieldId}/
+  GET https://api.lennardkuenen.dev/discussion/v3/posts/[apiKey]/[fieldId]/
 ```
 
 | Parameter | Type     | Description                |
 | :-------- | :------- | :------------------------- |
-| `api` | `string` | **Required**. Your API key |
-| `uuid` | `string` | **Required**. Your discussion uuid |
-| `limit` | `number` | **Required**. Maximum to receive (Max 35) |
+| `apiKey` | `string` | **Required**. Your API key |
+| `fieldId` | `string` | **Required**. Your discussion fieldUid |
+| `limit` | `number` | **Required**. Maximum to receive (Max 25) at a time |
 | `offset` | `number` |  |
 
 
 #### Get single comment
 
 ```http
-  GET https://api.lennardkuenen.dev/discussion/v3/singlePost/{apiKey}/{fieldId}/
+  GET https://api.lennardkuenen.dev/discussion/v3/singlePost/[apiKey]/[commentUid]/
 ```
 
 | Parameter | Type     | Description                       |
 | :-------- | :------- | :-------------------------------- |
 | `uuid`      | `string` | **Required**. uuid of item to fetch |
+| `apiKey`      | `string` | **Required**. The api key of you're project |
+| `commentUid`      | `string` | **Required**. The comment uid |
 
-
-```http
-  GET https://api.lennardkuenen.dev/discussion/v3/post/{apiKey}/{fieldId}/
-```
-
-| Parameter | Type     | Description                       |
-| :-------- | :------- | :-------------------------------- |
-| `api`      | `string` | **Required**. Api key |
-| `fieldUuid`      | `string` | **Required**. Comment field uuid |
-| `parent`      | `string` | parent id |
-| `message`      | `string` | **Required**. message |
-
-delete
 
 ## Deployment
 
